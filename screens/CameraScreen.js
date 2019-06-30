@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, Dimensions } from 'react-native';
-import { Camera, Permissions } from 'expo';
+import { Camera } from 'expo-camera';
+import * as Permissions from 'expo-permissions';
 
 export default class CameraScreen extends Component {
 	camera = null;
@@ -29,16 +30,16 @@ export default class CameraScreen extends Component {
 	}
 }
 
-const {width: windowWidth, height: winHeight} = Dimensions.get('window');
+const { width: winWidth, height: winHeight } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
-  preview: {
-    height:winHeigh,
-    width:winWidth,
-    position:'absolute',
-    left:0,
-    right:0,
-    bottom:0,
-    top:0,
-  }
-})
+	preview: {
+		height: winHeight,
+		width: winWidth,
+		position: 'absolute',
+		left: 0,
+		right: 0,
+		bottom: 0,
+		top: 0
+	}
+});
