@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, StyleSheet, Dimensions } from 'react-native';
 import { Camera, Permissions } from 'expo';
 
 export default class CameraScreen extends Component {
@@ -28,3 +28,17 @@ export default class CameraScreen extends Component {
 		);
 	}
 }
+
+const {width: windowWidth, height: winHeight} = Dimensions.get('window');
+
+const styles = StyleSheet.create({
+  preview: {
+    height:winHeigh,
+    width:winWidth,
+    position:'absolute',
+    left:0,
+    right:0,
+    bottom:0,
+    top:0,
+  }
+})
