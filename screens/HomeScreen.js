@@ -1,6 +1,7 @@
 import * as WebBrowser from 'expo-web-browser';
 import React from 'react';
 import { Image, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { createStackNavigator, StackActions, NavigationActions } from 'react-navigation';
 
 import { MonoText } from '../components/StyledText';
 
@@ -27,7 +28,7 @@ export default function HomeScreen() {
 
 				<View style={styles.helpContainer}>
 					<TouchableOpacity onPress={handleHelpPress} style={styles.helpLink}>
-						<Text style={styles.helpLinkText}>Make a Leap</Text>
+						<Text style={styles.helpLinkText}>Make a Leap, yo</Text>
 					</TouchableOpacity>
 				</View>
 			</ScrollView>
