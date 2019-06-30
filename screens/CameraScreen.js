@@ -2,11 +2,15 @@ import React, { Component } from 'react';
 import { View, Text, StyleSheet, Dimensions } from 'react-native';
 import { Camera } from 'expo-camera';
 import * as Permissions from 'expo-permissions';
+import { NavigationEvents } from 'react-navigation';
+import { logInAsync } from 'expo/build/Google';
 
 export default class CameraScreen extends Component {
 	camera = null;
 	state = {
-		hasCameraPermission: null
+		hasCameraPermission: null,
+		type: Camera.Constants.Type.back,
+		isFocused: false
 	};
 
 	async componentDidMount() {
@@ -18,15 +22,45 @@ export default class CameraScreen extends Component {
 	render() {
 		const { hasCameraPermission } = this.state;
 		if (hasCameraPermission === null) {
-			<View />;
+			return (
+				<View>
+					<Text>NULL CAM!</Text>
+				</View>
+			);
 		} else if (hasCameraPermission === false) {
 			return <Text>Denied camera access</Text>;
 		}
-		return (
-			<View>
-				<Camera style={styles.preview} ref={(camera) => (this.camera = camera)} />
-			</View>
-		);
+		if (this.state.isFocused === false) {
+			return (
+				<NavigationEvents
+					onWillFocus={(payload) => {
+						console.log('will focis >>', payload);
+						this.setState({ isFocused: true });
+					}}
+					onDidBlur={(payload) => {
+						console.log('left >> ', payload);
+						this.setState({ isFocused: false });
+					}}
+				/>
+			);
+		} else {
+			return (
+				<View>
+					<Camera style={styles.preview} type={this.state.type} ref={(camera) => (this.camera = camera)}>
+						<NavigationEvents
+							onWillFocus={(payload) => {
+								console.log('will focis >>', payload);
+								this.setState({ isFocused: true });
+							}}
+							onDidBlur={(payload) => {
+								console.log('left >> ', payload);
+								this.setState({ isFocused: false });
+							}}
+						/>
+					</Camera>
+				</View>
+			);
+		}
 	}
 }
 
