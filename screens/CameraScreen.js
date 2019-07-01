@@ -9,9 +9,12 @@ import Toolbar from '../toolbar.component';
 export default class CameraScreen extends Component {
 	camera = null;
 	state = {
+		captures: [],
 		hasCameraPermission: null,
-		type: Camera.Constants.Type.back,
-		isFocused: false
+		flashMode: Camera.Constants.FlashMode.off,
+		cameraType: Camera.Constants.Type.back,
+		isFocused: false,
+		capturing: false
 	};
 
 	async componentDidMount() {
@@ -20,8 +23,26 @@ export default class CameraScreen extends Component {
 		this.setState({ hasCameraPermission });
 	}
 
+	setFlashMode = (flashMode) => this.setState({ flashMode });
+	setCameraType = (cameraType) => this.setState({ cameraType });
+	handleCaptureIn = () => this.setState({ capturing: true });
+
+	handleCaptureOut = () => {
+		if (this.state.capturing) this.camera.stopRecording;
+	};
+
+	handleShortCapture = async () => {
+		const photoData = await this.camera.takePictureAsync();
+		this.setState({ capturing: false, captures: [ photoData, ...this.state.captures ] });
+	};
+
+	handleLongCapture = async () => {
+		const videoData = await this.camera.recordAsync();
+		this.setState({ capturing: false, captures: [ videoData, ...this.state.captures ] });
+	};
+
 	render() {
-		const { hasCameraPermission } = this.state;
+		const { hasCameraPermission, flashMode, cameraType, capturing } = this.state;
 		if (hasCameraPermission === null) {
 			return (
 				<View>
@@ -47,7 +68,11 @@ export default class CameraScreen extends Component {
 		} else {
 			return (
 				<React.Fragment>
-					<Camera style={styles.preview} type={this.state.type} ref={(camera) => (this.camera = camera)}>
+					<Camera
+						style={styles.preview}
+						cameraType={this.state.type}
+						ref={(camera) => (this.camera = camera)}
+					>
 						<NavigationEvents
 							onWillFocus={(payload) => {
 								console.log('will focis >>', payload);
