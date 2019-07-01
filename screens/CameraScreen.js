@@ -33,7 +33,7 @@ export default class CameraScreen extends Component {
 	handleCaptureIn = () => this.setState({ capturing: true });
 
 	handleCaptureOut = () => {
-		if (this.state.capturing) this.camera.stopRecording;
+		if (this.state.capturing) this.camera.stopRecording();
 	};
 
 	handleShortCapture = async () => {
@@ -48,13 +48,13 @@ export default class CameraScreen extends Component {
 
 	render() {
 		const { hasCameraPermission, flashMode, cameraType, capturing, captures } = this.state;
-		if (hasCameraPermission === null) {
-			return (
-				<View>
-					<Text>NULL CAM!</Text>
-				</View>
-			);
-		} else if (hasCameraPermission === false) {
+		// if (hasCameraPermission === null) {
+		// 	return (
+		// 		<View>
+		// 			<Text>NULL CAM!</Text>
+		// 		</View>
+		// 	);
+		if (hasCameraPermission === false) {
 			return <Text>Denied camera access</Text>;
 		}
 		if (this.state.isFocused === false) {
@@ -75,16 +75,14 @@ export default class CameraScreen extends Component {
 				<React.Fragment>
 					<Camera
 						style={styles.preview}
-						cameraType={this.state.type}
+						cameraType={this.state.cameraType}
 						ref={(camera) => (this.camera = camera)}
 					>
 						<NavigationEvents
 							onWillFocus={(payload) => {
-								console.log('will focis >>', payload);
 								this.setState({ isFocused: true });
 							}}
 							onDidBlur={(payload) => {
-								console.log('left >> ', payload);
 								this.setState({ isFocused: false });
 							}}
 						/>
