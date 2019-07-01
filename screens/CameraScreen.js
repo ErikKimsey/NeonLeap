@@ -12,6 +12,7 @@ export default class CameraScreen extends Component {
 	state = {
 		captures: [],
 		hasCameraPermission: null,
+		hasAudioPermission: null,
 		flashMode: Camera.Constants.FlashMode.off,
 		cameraType: Camera.Constants.Type.back,
 		isFocused: false,
@@ -20,7 +21,10 @@ export default class CameraScreen extends Component {
 
 	async componentDidMount() {
 		const camera = await Permissions.askAsync(Permissions.CAMERA);
-		const hasCameraPermission = camera.status === 'granted';
+		const audio = await Permissions.askAsync(Permissions.AUDIO_RECORDING);
+		const hasCameraPermission = camera.status === 'granted' && audio.status === 'granted';
+		console.log(hasCameraPermission);
+
 		this.setState({ hasCameraPermission });
 	}
 
@@ -43,7 +47,7 @@ export default class CameraScreen extends Component {
 	};
 
 	render() {
-		const { hasCameraPermission, flashMode, cameraType, capturing } = this.state;
+		const { hasCameraPermission, flashMode, cameraType, capturing, captures } = this.state;
 		if (hasCameraPermission === null) {
 			return (
 				<View>
@@ -85,7 +89,7 @@ export default class CameraScreen extends Component {
 							}}
 						/>
 					</Camera>
-					{captures.length > 0 && <Gallery captures={captures} />}
+					{captures.length > 0 && <Gallery captures={this.state.captures} />}
 					<Toolbar
 						capturing={capturing}
 						flashMode={flashMode}
