@@ -5,6 +5,7 @@ import * as Permissions from 'expo-permissions';
 import { NavigationEvents } from 'react-navigation';
 // import { logInAsync } from 'expo/build/Google';
 import Toolbar from '../toolbar.component';
+import Gallery from '../components/gallery';
 
 export default class CameraScreen extends Component {
 	camera = null;
@@ -84,7 +85,18 @@ export default class CameraScreen extends Component {
 							}}
 						/>
 					</Camera>
-					<Toolbar data="What up?" />
+					{captures.length > 0 && <Gallery captures={captures} />}
+					<Toolbar
+						capturing={capturing}
+						flashMode={flashMode}
+						cameraType={cameraType}
+						setFlashMode={this.setFlashMode}
+						setCameraType={this.setCameraType}
+						onCaptureIn={this.onCaptureIn}
+						onCaptureOut={this.onCaptureOut}
+						onLongCapture={this.handleLongCapture}
+						onShortCapture={this.onShortCapture}
+					/>
 				</React.Fragment>
 			);
 		}
