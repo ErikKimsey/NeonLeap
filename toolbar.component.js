@@ -26,7 +26,8 @@ export default ({
 					onPress={() =>
 						setFlashMode(flashMode === CameraFlashModes.on ? CameraFlashModes.off : CameraFlashModes.on)}
 				>
-					<Iconicons
+					console.log(props.data);
+					<Ionicons
 						name={flashMode == CameraFlashModes.on ? 'md-flash' : 'md-flash-off'}
 						color="white"
 						size={30}

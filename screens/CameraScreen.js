@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, Dimensions } from 'react-native';
 import { Camera } from 'expo-camera';
 import * as Permissions from 'expo-permissions';
 import { NavigationEvents } from 'react-navigation';
-import { logInAsync } from 'expo/build/Google';
+// import { logInAsync } from 'expo/build/Google';
 import Toolbar from '../toolbar.component';
 
 export default class CameraScreen extends Component {
@@ -46,7 +46,7 @@ export default class CameraScreen extends Component {
 			);
 		} else {
 			return (
-				<View>
+				<React.Fragment>
 					<Camera style={styles.preview} type={this.state.type} ref={(camera) => (this.camera = camera)}>
 						<NavigationEvents
 							onWillFocus={(payload) => {
@@ -59,8 +59,8 @@ export default class CameraScreen extends Component {
 							}}
 						/>
 					</Camera>
-					<Toolbar />
-				</View>
+					<Toolbar data="What up?" />
+				</React.Fragment>
 			);
 		}
 	}
