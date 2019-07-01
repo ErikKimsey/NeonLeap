@@ -4,6 +4,7 @@ import { Camera } from 'expo-camera';
 import * as Permissions from 'expo-permissions';
 import { NavigationEvents } from 'react-navigation';
 import { logInAsync } from 'expo/build/Google';
+import Toolbar from '../toolbar.component';
 
 export default class CameraScreen extends Component {
 	camera = null;
@@ -58,6 +59,7 @@ export default class CameraScreen extends Component {
 							}}
 						/>
 					</Camera>
+					<Toolbar />
 				</View>
 			);
 		}

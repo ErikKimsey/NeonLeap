@@ -14,7 +14,7 @@ export default ({
 	flashMode = CameraFlashModes.off,
 	setFlashMode,
 	setCameraType,
-	onCaptireIn,
+	onCaptureIn,
 	onCaptureOut,
 	onLongCapture,
 	onShortCapture
