@@ -11,22 +11,13 @@ export default class CameraScreen extends Component {
 	camera = null;
 	state = {
 		captures: [],
+		capturing: null,
 		hasCameraPermission: null,
 		hasAudioPermission: null,
 		flashMode: Camera.Constants.FlashMode.off,
 		cameraType: Camera.Constants.Type.back,
-		isFocused: false,
-		capturing: false
+		isFocused: false
 	};
-
-	async componentDidMount() {
-		const camera = await Permissions.askAsync(Permissions.CAMERA);
-		const audio = await Permissions.askAsync(Permissions.AUDIO_RECORDING);
-		const hasCameraPermission = camera.status === 'granted' && audio.status === 'granted';
-		console.log(hasCameraPermission);
-
-		this.setState({ hasCameraPermission });
-	}
 
 	setFlashMode = (flashMode) => this.setState({ flashMode });
 	setCameraType = (cameraType) => this.setState({ cameraType });
@@ -38,13 +29,26 @@ export default class CameraScreen extends Component {
 
 	handleShortCapture = async () => {
 		const photoData = await this.camera.takePictureAsync();
+		console.log(photoData);
+
 		this.setState({ capturing: false, captures: [ photoData, ...this.state.captures ] });
 	};
 
 	handleLongCapture = async () => {
 		const videoData = await this.camera.recordAsync();
+		console.log(videoData);
+
 		this.setState({ capturing: false, captures: [ videoData, ...this.state.captures ] });
 	};
+
+	async componentDidMount() {
+		const camera = await Permissions.askAsync(Permissions.CAMERA);
+		const audio = await Permissions.askAsync(Permissions.AUDIO_RECORDING);
+		const hasCameraPermission = camera.status === 'granted' && audio.status === 'granted';
+		console.log(hasCameraPermission);
+
+		this.setState({ hasCameraPermission });
+	}
 
 	render() {
 		const { hasCameraPermission, flashMode, cameraType, capturing, captures } = this.state;
@@ -73,21 +77,23 @@ export default class CameraScreen extends Component {
 		} else {
 			return (
 				<React.Fragment>
-					<Camera
-						style={styles.preview}
-						cameraType={this.state.cameraType}
-						ref={(camera) => (this.camera = camera)}
-					>
-						<NavigationEvents
-							onWillFocus={(payload) => {
-								this.setState({ isFocused: true });
-							}}
-							onDidBlur={(payload) => {
-								this.setState({ isFocused: false });
-							}}
-						/>
-					</Camera>
-					{captures.length > 0 && <Gallery captures={this.state.captures} />}
+					<View>
+						<Camera
+							style={styles.preview}
+							cameraType={this.state.cameraType}
+							ref={(camera) => (this.camera = camera)}
+						>
+							{/* <NavigationEvents
+								onWillFocus={(payload) => {
+									this.setState({ isFocused: true });
+								}}
+								onDidBlur={(payload) => {
+									this.setState({ isFocused: false });
+								}}
+							/> */}
+						</Camera>
+					</View>
+					{/* {captures.length > 0 && <Gallery captures={this.state.captures} />} */}
 					<Toolbar
 						capturing={capturing}
 						flashMode={flashMode}
