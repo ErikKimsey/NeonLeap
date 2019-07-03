@@ -93,7 +93,7 @@ export default class CameraScreen extends Component {
 							/> */}
 						</Camera>
 					</View>
-					{/* {captures.length > 0 && <Gallery captures={this.state.captures} />} */}
+					{this.state.captures.length > 0 && <Gallery captures={this.state.captures} />}
 					<Toolbar
 						capturing={capturing}
 						flashMode={flashMode}
